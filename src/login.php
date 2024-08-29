@@ -1,6 +1,6 @@
 <?php
 include_once './config/database.php';
-require "../vendor/autoload.php";
+require "./vendor/autoload.php";
 use \Firebase\JWT\JWT;
 
 header("Access-Control-Allow-Origin: *");
@@ -44,8 +44,8 @@ if($num > 0){
         $secret_key = "YOUR_SECRET_KEY";
         $issuer_claim = "THE_ISSUER";
         $audience_claim = "THE_AUDIENCE";
-        $issuedat_claim = 1356999524; // issued at
-        $notbefore_claim = 1357000000; //not before
+        $issuedat_claim = time(); // issued at
+        $notbefore_claim = time(); //not before
         $token = array(
             "iss" => $issuer_claim,
             "aud" => $audience_claim,

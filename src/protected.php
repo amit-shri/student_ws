@@ -1,6 +1,6 @@
 <?php
 include_once './config/database.php';
-require "../vendor/autoload.php";
+require "./vendor/autoload.php";
 use \Firebase\JWT\JWT;
 
 header("Access-Control-Allow-Origin: *");
@@ -17,12 +17,12 @@ $conn = $databaseService->getConnection();
 
 $data = json_decode(file_get_contents("php://input"));
 
-
+// print_r($_SERVER); die;
 $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
 
 $arr = explode(" ", $authHeader);
 
-
+// print_r($arr);die;
 /*echo json_encode(array(
     "message" => "sd" .$arr[1]
 ));*/
@@ -37,7 +37,7 @@ if($jwt){
 
         echo json_encode(array(
             "message" => "Access granted: ".$jwt,
-            "error" => $e->getMessage()
+            // "error" => $e->getMessage()
         ));
  
     }catch (Exception $e){
