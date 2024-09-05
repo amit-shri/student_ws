@@ -159,6 +159,18 @@ class Router{
      * @return void
      */
     public function listen(){
+
+        // Set CORS headers
+        header("Access-Control-Allow-Origin: *"); // Adjust as needed
+        header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+        // Handle preflight requests
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            exit; // exit for OPTIONS request
+        }
+
+        
         if(!$this->matched){
             header("HTTP/1.1 404 Not Found");
             return;

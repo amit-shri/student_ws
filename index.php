@@ -2,6 +2,7 @@
 // php -S 127.0.0.1:8000
 // 1. Include the class
 require './src/library/Router.php';
+include_once './config/database.php';
 
 // 2. Init the Router class
 $router = new Router();
@@ -29,10 +30,10 @@ $router->post('/api/user/verify', function(){
 });
 
 // 3.4 POST method with params
-$router->post('/api/student/add', function($params){
+$router->post('/api/student/add', function(){
     // Code goes here
     // echo $params['id'];
-    echo "add student";
+    include_once './src/student/add.php';
 });
 
 // 3.5 POST method with params

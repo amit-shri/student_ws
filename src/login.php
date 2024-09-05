@@ -1,6 +1,7 @@
 <?php
 include_once './config/database.php';
 require "./vendor/autoload.php";
+
 use \Firebase\JWT\JWT;
 
 header("Access-Control-Allow-Origin: *");
@@ -25,22 +26,21 @@ $password = $data->password;
 
 $table_name = 'Users';
 
-$query = "SELECT id, first_name, last_name, password FROM " . $table_name . " WHERE email = ? LIMIT 0,1";
+$query = "SELECT id, first_name, last_name, password FROM " . $table_name . " WHERE status = 1 and email = ? LIMIT 0,1";
 
-$stmt = $conn->prepare( $query );
+$stmt = $conn->prepare($query);
 $stmt->bindParam(1, $email);
 $stmt->execute();
 $num = $stmt->rowCount();
 
-if($num > 0){
+if ($num > 0) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $id = $row['id'];
     $firstname = $row['first_name'];
     $lastname = $row['last_name'];
     $password2 = $row['password'];
-    
-    if(password_verify($password, $password2))
-    {
+
+    if (password_verify($password, $password2)) {
         $secret_key = "YOUR_SECRET_KEY";
         $issuer_claim = "THE_ISSUER";
         $audience_claim = "THE_AUDIENCE";
@@ -56,23 +56,23 @@ if($num > 0){
                 "firstname" => $firstname,
                 "lastname" => $lastname,
                 "email" => $email
-        ));
- 
+            )
+        );
+
         http_response_code(200);
- 
+
         $jwt = JWT::encode($token, $secret_key);
         echo json_encode(
             array(
-                "message" => "Successful login.",
-                "jwt" => $jwt
-            ));
-    }
-    else{
-        
-        http_response_code(401);
-        echo json_encode(array("message" => "Login failed.", "password" => $password, "password2" => $password2));
+                "status" => true,
+                "msg" => "Login Successful.",
+                "token" => $jwt,
+                "firstname" =>  $firstname
+            )
+        );
+        die;
     }
 }
-?>
 
-
+http_response_code(401);
+echo json_encode(array("status" => false, "msg" => "Authentication Failed."));
